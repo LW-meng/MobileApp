@@ -6,6 +6,8 @@ import { StyleSheet, Text, View, Button, } from 'react-native';
 
 import AboutScreen from './About'
 import LoginScreen from './Login'
+import PlanFormScreen from './PlanForm'
+import PlanScreen from './Plan'
 
 import Footer from './Footer'
 
@@ -19,6 +21,8 @@ const MyStack = () => {
         <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Welcome Home' }}/>
         <Stack.Screen name="About" component={AboutScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="PlanForm" component={PlanFormScreen} />
+        <Stack.Screen name="Plan" component={PlanScreen} />
 
       </Stack.Navigator>
     </NavigationContainer>
@@ -47,6 +51,19 @@ const HomeScreen = ({ navigation }) => {
           title="About"
           onPress={() =>
             navigation.navigate('About')
+          }
+        />
+
+        <Button
+          title="PlanForm"
+          onPress={() =>
+            navigation.navigate('PlanForm', {n: 'Wei'})
+          }
+        />
+        <Button
+          title="Plan"
+          onPress={() =>
+            navigation.navigate('Plan')
           }
         />
 
