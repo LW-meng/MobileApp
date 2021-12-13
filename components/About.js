@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'stretch',
-    justifyContent: 'stretch',
+    //justifyContent: 'stretch',
   },
   header: {
     flex:1,
@@ -52,6 +52,6 @@ const styles = StyleSheet.create({
     flex:1,
     flexDirection:'row',
     alignItems: 'stretch',
-    justifyContent: 'stretch',
+    //justifyContent: 'stretch',
   },
 });

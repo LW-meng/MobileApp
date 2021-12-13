@@ -12,7 +12,7 @@ export default function App() {
               Log in
           </Text>
       </View>
-      
+
       <View style={{flex:8}}>
         <View style={styles.formBox}>
           <TextInput style={styles.input} placeholder="Username"/>
@@ -33,8 +33,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'stretch',
-    justifyContent: 'stretch',
+    //alignItems: 'stretch',
+    //justifyContent: 'stretch',
   },
   header: {
     flex:1,

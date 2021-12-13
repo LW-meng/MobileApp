@@ -1,15 +1,18 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, {createContext, useContext} from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Home from './components/Home.js'
+import MyStack from './components/MyStack.js'
 //import MathQuiz from './components/MathQuiz'
 //import Math from './components/Math'
-import PlanForm from './components/PlanForm'
-import Plan from './components/Plan'
+//import PlanForm from './components/PlanForm'
+//import Plan from './components/Plan'
+//import Quiz5 from './components/Quiz5'
+
+
 export default function App() {
 
   return (
-    //<Home/>
-    <Home/>
+    //<Quiz5/>
+    <MyStack/>
   );
 }

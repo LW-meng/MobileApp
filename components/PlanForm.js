@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
+import { Button, StyleSheet, Text, TextInput, View, SafeAreaView, FlatList} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -8,11 +8,14 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
 const PlanFormScreen = ({navigation, route}) =>{
+  //const [name, setName] = useState(route.params.n)
   const [name, setName] = useState(route.params.n)
   const [startTime, setStartTime] = useState("7 pm")
   const [endTime, setEndTime] = useState("8 pm")
   const [workout1, setWorkOut1] = useState("Squat")
-  const [debugging,setDebugging] = useState(false);
+  const [debugging,setDebugging] = useState(false)
+  const [curID, setCurID] = useState(0)
+  const [curRecords, setCurRecords] = useState([])
 
   //useEffect(() => {getData();}, []);
   const getData = async () => {
@@ -22,10 +25,12 @@ const PlanFormScreen = ({navigation, route}) =>{
       let data = null
       if (jsonValue != null) {
         data = JSON.parse(jsonValue)
-        setName(data.name)
-        setStartTime(data.startTime)
-        setEndTime(data.endTime)
-        setWorkOut1(data.workout1)
+        // setName(data.name)
+        // setStartTime(data.startTime)
+        // setEndTime(data.endTime)
+        // setWorkOut1(data.workout1)
+        setCurRecords(data.records)
+        setCurID(data.id)
         console.log("just set Info, Name and Email")
       } else {
         console.log("just read a null value from Storage")
@@ -43,7 +48,8 @@ const PlanFormScreen = ({navigation, route}) =>{
 
   const storeData = async (value) => {
     try {
-      const jsonValue = JSON.stringify(value);
+      let input = {records: curRecords, id: curID};
+      const jsonValue = JSON.stringify(input);
       await AsyncStorage.setItem("user", jsonValue);
       console.log("just stored " + jsonValue);
     } catch (e) {
@@ -55,6 +61,7 @@ const PlanFormScreen = ({navigation, route}) =>{
 
   const clearAll = async () => {
     try {
+      setCurRecords([]);
       console.log("in clearData");
       await AsyncStorage.clear();
     } catch (e) {
@@ -63,8 +70,27 @@ const PlanFormScreen = ({navigation, route}) =>{
       // clear error
     }
   };
-
   useEffect(() => {getData();}, []);
+  const addPost = () =>{
+    let post =
+      {id: curID, name: name, startTime: startTime, endTime: endTime, workout1: workout1};
+    let temp = [];
+    if (curRecords.length == 0) {
+      temp = [post];
+    } else {
+      temp = curRecords;
+      temp.push(post);
+    }
+    setCurRecords(temp)
+    setCurID(curID+1)
+    setName("Wei")
+    setStartTime("7pm")
+    setEndTime("8 pm")
+    setWorkOut1("Squat")
+    console.log(post)
+    storeData(temp)
+  }
+  //useEffect(() => {getData();}, []);
 
   let debugView = ""
   if (debugging) {
@@ -76,6 +102,16 @@ const PlanFormScreen = ({navigation, route}) =>{
           <Text> name: {name} </Text>
       </View>
   }
+
+  const Item = ({ item }) => {
+    return (
+      <View style={{ padding: 10, margin: 10, backgroundColor: "#ddd" }}>
+        {console.log(item)}
+        <Text style={{ fontSize: 24 }}>{item.name}</Text>
+        <Text>{item.workout1}  {item.startTime}-{item.endTime}</Text>
+      </View>
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -115,25 +151,25 @@ const PlanFormScreen = ({navigation, route}) =>{
       </View>
       <View style={styles.fixToText}>
         <Button
-          color='red'
+          color='blue'
           title='submit'
           onPress = {() => {
-            const theInfo = {name: name, startTime: startTime, endTime: endTime, workout1: workout1}
-            console.log(`theInfo=${theInfo}`)
-            console.log('data='+JSON.stringify(theInfo))
-            storeData(theInfo)
+            addPost()
+            // const theInfo = {id: curID, name: name, startTime: startTime, endTime: endTime, workout1: workout1}
+            // console.log(`theInfo=${theInfo}`)
+            // console.log('data='+JSON.stringify(theInfo))
+            // storeData(theInfo)
             navigation.navigate('Plan', {n: name})
           }}
         />
-      </View>
-      <View style={styles.fixToText}>
         <Button
-          title={(debugging?'hide':'show')+" debug info" }
-          color="green"
-          onPress = {() => setDebugging(!debugging)}
-          />
+          color='red'
+          title='clear'
+          onPress = {() => {
+            clearAll()
+          }}
+        />
       </View>
-      {debugView}
     </View>
   );
 }
@@ -144,7 +180,7 @@ const styles = StyleSheet.create({
     flex: 10,
     flexDirection: "column",
     backgroundColor: "#fff",
-    alignItems: "left",
+    //alignItems: "left",
     margin: "20px",
     padding: "20px",
   },
@@ -169,11 +205,11 @@ const styles = StyleSheet.create({
   },
   rowContainer: {
     flexDirection: "row",
-    alignItems: "center",
+    //alignItems: "center",
   },
   fixToText: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    //justifyContent: "space-between",
   },
 });
 

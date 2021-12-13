@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {createContext, useContext} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -12,13 +13,15 @@ import PlanScreen from './Plan'
 import Footer from './Footer'
 
 const Stack = createNativeStackNavigator();
+const Context = createContext("Default Value");
 
 const MyStack = () => {
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
 
-        <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Welcome Home' }}/>
+        <Stack.Screen name="Home" component={HomeScreen} options={{ title:'Welcom Wei'}}/>
         <Stack.Screen name="About" component={AboutScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="PlanForm" component={PlanFormScreen} />
@@ -31,12 +34,14 @@ const MyStack = () => {
 
 
 const HomeScreen = ({ navigation }) => {
+  const value = "Wei";
   return (
       <View style={{ flexDirection: 'row',
                      margin:"25px",
                      //border:"thick solid black",
                      padding:'10px',
-                     justifyContent: 'space-around', }}>
+                     //justifyContent: 'space-around',
+                   }}>
 
 
         <Button
@@ -57,7 +62,7 @@ const HomeScreen = ({ navigation }) => {
         <Button
           title="PlanForm"
           onPress={() =>
-            navigation.navigate('PlanForm', {n: 'Wei'})
+            navigation.navigate('PlanForm', {n: value})
           }
         />
         <Button
@@ -66,9 +71,7 @@ const HomeScreen = ({ navigation }) => {
             navigation.navigate('Plan')
           }
         />
-
     </View>
-
   );
 };
 
